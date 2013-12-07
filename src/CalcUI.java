@@ -1,31 +1,97 @@
 
-import javax.swing.UIManager;
+import java.awt.*;
+import java.awt.event.*;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+public class CalcUI extends javax.swing.JFrame implements ActionListener {
 
-/**
- *
- * @author trevorransom
- */
-public class CalcUI extends javax.swing.JFrame {
-
-    /**
-     * Creates new form CalcUI
-     */
-    public CalcUI() {
-        initComponents();
+    double[] temps = {0, 0};
+    boolean[] operations = new boolean[4];
+    
+    public void clear() {
+        try {
+            jTextArea1.setText("");
+            for(int i = 0; i < 4; i++)
+                operations[i] = false;
+            for(int i = 0; i < 2; i++)
+                temps[i] = 0;
+        } catch(NullPointerException e) {  
+        }
     }
     
-    public final void setDesign() {
+    CalcUI() {
+        initComponents();
+        for(int i = 0; i < 4; i++)
+            operations[i] = false;
+    }
+    
+    public void equals() {
+        double result = 0;  
+        temps[1] = Double.parseDouble(jTextArea1.getText()); 
         try {
-            UIManager.setLookAndFeel(
-                    "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch(Exception e) {   
+            if(operations[2] == true)  
+                result = temps[0] * temps[1];
+            else if(operations[3] == true) 
+                result = temps[0] / temps[1];
+            else if(operations[0] == true)
+                result = temps[0] + temps[1];
+            else if(operations[1] == true) 
+                result = temps[0] - temps[1];
+            jTextArea1.setText(Double.toString(result)); 
+            for(int i = 0; i < 4; i++)
+                operations[i] = false;
+        } catch(NumberFormatException error) {
         }
+    }
+
+    
+    @Override
+    public void actionPerformed(ActionEvent perform) {
+        if(perform.getSource() == jButton15)
+            jTextArea1.append("7");
+        if(perform.getSource() == jButton8)
+            jTextArea1.append("8");
+        if(perform.getSource() == jButton9)
+            jTextArea1.append("9");
+        if(perform.getSource() == jButton13) {
+            temps[0] = Double.parseDouble(jTextArea1.getText());
+            operations[0] = true;
+            jTextArea1.setText("");
+        }
+        if(perform.getSource() == jButton4)
+            jTextArea1.append("4");
+        if(perform.getSource() == jButton5)
+            jTextArea1.append("5");
+        if(perform.getSource() == jButton6)
+            jTextArea1.append("6");
+        if(perform.getSource() == jButton17) {
+            temps[0] = Double.parseDouble(jTextArea1.getText());
+            operations[1] = true;
+            jTextArea1.setText("");
+        }
+        if(perform.getSource() == jButton1)
+            jTextArea1.append("1");
+        if(perform.getSource() == jButton2)
+            jTextArea1.append("2");
+        if(perform.getSource() == jButton3)
+            jTextArea1.append("3");
+        if(perform.getSource() == jButton18) {
+            temps[0] = Double.parseDouble(jTextArea1.getText());
+            operations[2] = true;
+            jTextArea1.setText("");
+        }
+        if(perform.getSource() == jButton14)
+            jTextArea1.append(".");
+        if(perform.getSource() == jButton11) {
+            temps[0] = Double.parseDouble(jTextArea1.getText());
+            operations[3] = true;
+            jTextArea1.setText("");
+        }
+        if(perform.getSource() == jButton16)
+            clear();
+        if(perform.getSource() == jButton12)
+            equals();
+        if(perform.getSource() == jButton10)
+            jTextArea1.append("0");
     }
 
     /**
@@ -39,6 +105,8 @@ public class CalcUI extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jButton7 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
         jButton15 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -47,7 +115,7 @@ public class CalcUI extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        jButton18 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -69,31 +137,52 @@ public class CalcUI extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(380, 245));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(1);
+        jScrollPane1.setViewportView(jTextArea1);
+        jTextArea1.setEditable(false);
+        jTextArea1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 50));
+
         jPanel1.setLayout(new java.awt.GridLayout(5, 4));
 
         jButton15.setText("7");
         jPanel1.add(jButton15);
+        jButton15.addActionListener(this);
 
         jButton8.setText("8");
         jPanel1.add(jButton8);
+        jButton8.addActionListener(this);
 
         jButton9.setText("9");
         jPanel1.add(jButton9);
+        jButton9.addActionListener(this);
 
         jButton16.setText("C");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton16);
+        jButton16.addActionListener(this);
 
         jButton4.setText("4");
         jPanel1.add(jButton4);
+        jButton4.addActionListener(this);
 
         jButton5.setText("5");
         jPanel1.add(jButton5);
+        jButton5.addActionListener(this);
 
         jButton6.setText("6");
         jPanel1.add(jButton6);
+        jButton6.addActionListener(this);
 
-        jToggleButton1.setText("*");
-        jPanel1.add(jToggleButton1);
+        jButton18.setText("*");
+        jPanel1.add(jButton18);
+        jButton18.addActionListener(this);
 
         jButton1.setText("1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -102,32 +191,41 @@ public class CalcUI extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton1);
+        jButton1.addActionListener(this);
 
         jButton2.setText("2");
         jPanel1.add(jButton2);
+        jButton2.addActionListener(this);
 
         jButton3.setText("3");
         jPanel1.add(jButton3);
+        jButton3.addActionListener(this);
 
         jButton11.setText("/");
         jPanel1.add(jButton11);
+        jButton11.addActionListener(this);
 
         jButton10.setText("0");
         jPanel1.add(jButton10);
+        jButton10.addActionListener(this);
 
         jButton14.setText(".");
         jPanel1.add(jButton14);
+        jButton14.addActionListener(this);
 
         jButton17.setText("-");
         jPanel1.add(jButton17);
+        jButton17.addActionListener(this);
 
         jButton13.setText("+");
         jPanel1.add(jButton13);
+        jButton13.addActionListener(this);
 
         jButton12.setText("=");
         jPanel1.add(jButton12);
+        jButton12.addActionListener(this);
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 370));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 480, 370));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -139,6 +237,10 @@ public class CalcUI extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton16ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,6 +289,7 @@ public class CalcUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
+    private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -196,6 +299,7 @@ public class CalcUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }
